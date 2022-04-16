@@ -3,7 +3,6 @@ package fps
 import (
 	"fmt"
 	"github.com/mrparano1d/ecs"
-	"github.com/mrparano1d/pong/opengl"
 	"time"
 )
 
@@ -20,13 +19,13 @@ func NewPlugin() *Plugin {
 }
 
 func (p *Plugin) Build(app *ecs.App) {
-	app.AddStartUpSystemToStage(opengl.StageRender, func(commands *ecs.Commands) {
+	app.AddStartUpSystem(func(commands *ecs.Commands) {
 		commands.InvokeResource(func(resourceMap ecs.ResourceMap) {
 			ecs.AddResource[*TickerRes](resourceMap, &TickerRes{Ticker: time.NewTicker(1 * time.Second)})
 		})
 	})
 
-	app.AddSystemToStage(opengl.StageRender, func(ctx *ecs.SystemContext) {
+	app.AddSystem(func(ctx *ecs.SystemContext) {
 		p.count++
 		now := int64(time.Since(ctx.Time().Startup()))
 		defer func() {
