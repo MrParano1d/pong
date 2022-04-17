@@ -1,8 +1,9 @@
 package fps
 
 import (
-	"fmt"
 	"github.com/mrparano1d/ecs"
+	"github.com/mrparano1d/pong/core"
+	"go.uber.org/zap"
 	"time"
 )
 
@@ -19,13 +20,23 @@ func NewPlugin() *Plugin {
 }
 
 func (p *Plugin) Build(app *ecs.App) {
-	app.AddStartUpSystem(func(commands *ecs.Commands) {
+
+	app.AddStartUpSystemToStage(core.StageFirst, func(commands ecs.Commands) {
 		commands.InvokeResource(func(resourceMap ecs.ResourceMap) {
+			config := ecs.GetResource[*core.ConfigRes](resourceMap)
+			if config.Environment == core.EnvRelease {
+				return
+			}
 			ecs.AddResource[*TickerRes](resourceMap, &TickerRes{Ticker: time.NewTicker(1 * time.Second)})
 		})
 	})
 
-	app.AddSystem(func(ctx *ecs.SystemContext) {
+	app.AddSystemToStage(core.StageFirst, func(ctx ecs.SystemContext) {
+		config := ecs.GetResource[*core.ConfigRes](ctx.Resources)
+		if config.Environment == core.EnvRelease {
+			return
+		}
+
 		p.count++
 		now := int64(time.Since(ctx.Time().Startup()))
 		defer func() {
@@ -40,11 +51,11 @@ func (p *Plugin) Build(app *ecs.App) {
 
 		select {
 		case <-ticker.Ticker.C:
-			fmt.Printf("Current FPS: %.2f\n", float64(p.count)*float64(time.Second)/float64(now-p.lastUpdate))
+			logger := ecs.GetResource[*zap.Logger](ctx.Resources)
+			logger.Debug("FPS", zap.Float64("fps", float64(p.count)*float64(time.Second)/float64(now-p.lastUpdate)))
 		default:
 		}
 
 		p.count = 0
 	})
-
 }
