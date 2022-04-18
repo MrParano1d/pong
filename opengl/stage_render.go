@@ -11,9 +11,7 @@ func init() {
 }
 
 const (
-	StageRender  = "render"
-	windowWidth  = 800
-	windowHeight = 600
+	StageRender = "render"
 )
 
 type RenderStage struct {

@@ -9,8 +9,9 @@ import (
 	"flag"
 	"fmt"
 	"github.com/mrparano1d/ecs"
-	"github.com/mrparano1d/pong/core"
+	"github.com/mrparano1d/ecs/core"
 	"github.com/mrparano1d/pong/fps"
+	"github.com/mrparano1d/pong/game"
 	"github.com/mrparano1d/pong/opengl"
 	"log"
 	"os"
@@ -39,8 +40,13 @@ func main() {
 	app := ecs.NewApp()
 
 	app.AddPlugin(core.NewPlugin(core.EnvDebug))
-	app.AddPlugin(opengl.NewPlugin())
+	app.AddPlugin(opengl.NewPlugin(&opengl.PluginConfig{
+		Title:  "Pong",
+		Width:  800,
+		Height: 600,
+	}))
 	app.AddPlugin(fps.NewPlugin())
+	app.AddPlugin(game.NewPlugin())
 
 	if err := app.Run(); err != nil {
 		log.Fatal(err)

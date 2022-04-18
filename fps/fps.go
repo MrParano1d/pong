@@ -2,7 +2,7 @@ package fps
 
 import (
 	"github.com/mrparano1d/ecs"
-	"github.com/mrparano1d/pong/core"
+	"github.com/mrparano1d/ecs/core"
 	"go.uber.org/zap"
 	"time"
 )
@@ -37,8 +37,10 @@ func (p *Plugin) Build(app *ecs.App) {
 			return
 		}
 
+		gameTime := ecs.GetResource[*core.Time](ctx.Resources)
+
 		p.count++
-		now := int64(time.Since(ctx.Time().Startup()))
+		now := int64(time.Since(gameTime.Startup()))
 		defer func() {
 			p.lastUpdate = now
 		}()

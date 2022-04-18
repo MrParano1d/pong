@@ -20,13 +20,31 @@ func DebugSystem() ecs.StartUpSystem {
 
 func debugCallback(logger *zap.Logger) gl.DebugProc {
 	return func(source uint32, gltype uint32, id uint32, severity uint32, length int32, message string, userParam unsafe.Pointer) {
-		logger.Debug(
-			message,
-			zap.Uint32("source", source),
-			zap.Uint32("gltype", gltype),
-			zap.Uint32("id", id),
-			zap.Uint32("severity", severity),
-			zap.Int32("length", length),
-		)
+		switch severity {
+		case gl.DEBUG_SEVERITY_HIGH:
+			logger.Error(message, zap.Uint32("source", source),
+				zap.Uint32("gltype", gltype),
+				zap.Uint32("id", id),
+				zap.Uint32("severity", severity),
+				zap.Int32("length", length))
+		case gl.DEBUG_SEVERITY_MEDIUM:
+			logger.Warn(message, zap.Uint32("source", source),
+				zap.Uint32("gltype", gltype),
+				zap.Uint32("id", id),
+				zap.Uint32("severity", severity),
+				zap.Int32("length", length))
+		case gl.DEBUG_SEVERITY_LOW:
+			logger.Info(message, zap.Uint32("source", source),
+				zap.Uint32("gltype", gltype),
+				zap.Uint32("id", id),
+				zap.Uint32("severity", severity),
+				zap.Int32("length", length))
+		default:
+			logger.Debug(message, zap.Uint32("source", source),
+				zap.Uint32("gltype", gltype),
+				zap.Uint32("id", id),
+				zap.Uint32("severity", severity),
+				zap.Int32("length", length))
+		}
 	}
 }
