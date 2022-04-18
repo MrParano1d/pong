@@ -69,7 +69,7 @@ func (s *Shader) link(shaders [2]uint32) error {
 func (s *Shader) compile(source []byte, shaderType uint32) (uint32, error) {
 	id := gl.CreateShader(shaderType)
 
-	shaderChars, freeFn := gl.Strs(string(source))
+	shaderChars, freeFn := gl.Strs(string(source) + "\x00")
 	defer freeFn()
 
 	gl.ShaderSource(id, 1, shaderChars, nil)

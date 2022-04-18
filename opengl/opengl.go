@@ -3,12 +3,14 @@ package opengl
 import (
 	"github.com/mrparano1d/ecs"
 	"github.com/mrparano1d/ecs/core"
+	"github.com/mrparano1d/pong/opengl/time"
 )
 
 type PluginConfig struct {
-	Title  string
-	Width  int
-	Height int
+	Title          string
+	Width          int
+	Height         int
+	ShowWireframes bool
 }
 
 type Plugin struct {
@@ -24,11 +26,19 @@ func NewPlugin(config *PluginConfig) *Plugin {
 }
 
 func (p *Plugin) Build(app *ecs.App) {
+
+	// Config
 	app.AddStartUpSystemToStage(core.StageFirst, func(commands ecs.Commands) {
 		commands.InvokeResource(func(resourceMap ecs.ResourceMap) {
 			ecs.AddResource[*PluginConfig](resourceMap, p.config)
 		})
 	})
+
+	// Time
+	app.AddStartUpSystemToStage(core.StageFirst, time.Setup())
+	app.AddSystemToStage(core.StageFirst, time.System())
+
+	// Stages
 	app.AddStageAfter(core.StagePostUpdate, NewRenderStage())
 	app.AddStageBefore(StageRender, NewPrepareStage())
 	app.AddStageAfter(StageRender, NewCleanupStage())

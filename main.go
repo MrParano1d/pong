@@ -41,9 +41,10 @@ func main() {
 
 	app.AddPlugin(core.NewPlugin(core.EnvDebug))
 	app.AddPlugin(opengl.NewPlugin(&opengl.PluginConfig{
-		Title:  "Pong",
-		Width:  800,
-		Height: 600,
+		Title:          "Pong",
+		Width:          800,
+		Height:         600,
+		ShowWireframes: true,
 	}))
 	app.AddPlugin(fps.NewPlugin())
 	app.AddPlugin(game.NewPlugin())

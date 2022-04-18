@@ -34,6 +34,8 @@ github.com/mrparano1d/ecs v0.0.0-20220417215037-4cb5a556d081 h1:WUJUW/4ZDJmacRyz
 github.com/mrparano1d/ecs v0.0.0-20220417215037-4cb5a556d081/go.mod h1:Gps9hmszXJOGof30UIN0JdAbv1XLn2oyvDB9zUd0eQk=
 github.com/mrparano1d/ecs v0.0.0-20220418122040-abce5cbfd2c6 h1:OMsJ1TXOI5QDHa0PHbrVIQ2GQEqKf9r1HOH06BZrN7U=
 github.com/mrparano1d/ecs v0.0.0-20220418122040-abce5cbfd2c6/go.mod h1:hHAZZTpa38RuSHm+ei4V2Jl6DMQFPa9ekV9qvWYtQEM=
+github.com/mrparano1d/ecs v0.0.0-20220418124026-746a06d09d83 h1:IPBZUT+Nry0PpnwXeLY0z+6ykT9BnET5yxa65zNQVeA=
+github.com/mrparano1d/ecs v0.0.0-20220418124026-746a06d09d83/go.mod h1:hHAZZTpa38RuSHm+ei4V2Jl6DMQFPa9ekV9qvWYtQEM=
 github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=

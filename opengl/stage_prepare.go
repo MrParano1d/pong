@@ -48,7 +48,7 @@ func NewPrepareStage() *PrepareStage {
 				panic(err)
 			}
 
-			window.SetKeyCallback(keyCallback)
+			window.SetKeyCallback(keyCallback(config))
 
 			gl.ClearColor(0.0, 0.0, 0.0, 1.0)
 
@@ -60,8 +60,13 @@ func NewPrepareStage() *PrepareStage {
 
 	s.AddStartUpSystem(DebugSystem())
 
-	s.AddStartUpSystem(func(commands ecs.Commands) {
-		// TODO load assets
+	s.AddSystem(func(ctx ecs.SystemContext) {
+		config := ecs.GetResource[*PluginConfig](ctx.Resources)
+		if config.ShowWireframes {
+			gl.PolygonMode(gl.FRONT_AND_BACK, gl.LINE)
+		} else {
+			gl.PolygonMode(gl.FRONT_AND_BACK, gl.FILL)
+		}
 	})
 
 	return s
@@ -71,11 +76,17 @@ func (p *PrepareStage) Name() string {
 	return StagePrepare
 }
 
-func keyCallback(window *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
+func keyCallback(config *PluginConfig) func(window *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
+	return func(window *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
 
-	// When a user presses the escape key, we set the WindowShouldClose property to true,
-	// which closes the application
-	if key == glfw.KeyEscape && action == glfw.Press {
-		window.SetShouldClose(true)
+		if key == glfw.KeyW && action == glfw.Press {
+			config.ShowWireframes = !config.ShowWireframes
+		}
+
+		// When a user presses the escape key, we set the WindowShouldClose property to true,
+		// which closes the application
+		if key == glfw.KeyEscape && action == glfw.Press {
+			window.SetShouldClose(true)
+		}
 	}
 }
