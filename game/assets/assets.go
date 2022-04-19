@@ -1,7 +1,6 @@
 package assets
 
 import (
-	"fmt"
 	"github.com/go-gl/mathgl/mgl32"
 	"github.com/mrparano1d/ecs"
 	"github.com/mrparano1d/pong/opengl/camera"
@@ -10,7 +9,6 @@ import (
 	"github.com/mrparano1d/pong/opengl/window"
 	"go.uber.org/zap"
 	"image/color"
-	"reflect"
 )
 
 func Setup() ecs.StartUpSystem {
@@ -68,13 +66,7 @@ func System() ecs.System {
 		win := ecs.GetResource[*window.Resource](ctx.Resources)
 		t := ecs.GetResource[*time.Resource](ctx.Resources)
 
-		projections := ecs.GetResource[*camera.Projections](ctx.Resources)
-
 		position = position.Add(velocity.Mul(float32(t.Delta())))
-
-		fmt.Println("position", position)
-
-		fmt.Println("asset window", win.Width, "x", win.Height, reflect.DeepEqual(cam.Orthographic.Projection(), projections.Orthographic))
 
 		if position.X()+float32(asset.Width) >= win.Width || position.X() <= 0 {
 			velocity[0] *= -1

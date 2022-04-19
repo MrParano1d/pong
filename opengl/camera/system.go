@@ -1,10 +1,8 @@
 package camera
 
 import (
-	"fmt"
 	"github.com/mrparano1d/ecs"
 	"github.com/mrparano1d/pong/opengl/window"
-	"reflect"
 )
 
 func Setup() ecs.StartUpSystem {
@@ -14,8 +12,6 @@ func Setup() ecs.StartUpSystem {
 
 			oProj := NewDefaultOrthographicProjection(WithOrthographicWindowOrigin(WindowOriginBottomLeft))
 			oProj.Update(w.Width, w.Height)
-
-			fmt.Println("o mat", w.Width, w.Height, oProj.Matrix())
 
 			pProj := NewDefaultPerspectiveProjection()
 			pProj.Update(w.Width, w.Height)
@@ -45,11 +41,7 @@ func System() ecs.System {
 		projections.Orthographic.Update(w.Width, w.Height)
 		projections.Perspective.Update(w.Width, w.Height)
 
-		fmt.Println("o mat update", w.Width, "x", w.Height, projections.Orthographic.Matrix())
-
 		cameras.Orthographic.Update()
 		cameras.Perspective.Update()
-
-		fmt.Println("window", w.Width, "x", w.Height, reflect.DeepEqual(cameras.Orthographic.projection, projections.Orthographic))
 	}
 }

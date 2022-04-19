@@ -68,7 +68,6 @@ func NewPrepareStage() *PrepareStage {
 					windowRes.Width = float32(width)
 					windowRes.Height = float32(height)
 				})
-				windowRes.Handle.SetSize(1024, 768)
 			},
 		})
 	})
