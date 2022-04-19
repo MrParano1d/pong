@@ -2,6 +2,7 @@ package opengl
 
 import (
 	"github.com/mrparano1d/ecs"
+	"github.com/mrparano1d/pong/opengl/window"
 )
 
 const (
@@ -20,8 +21,8 @@ func NewCleanupStage() *CleanupStage {
 	}
 
 	s.AddSystem(func(ctx ecs.SystemContext) {
-		window := ecs.GetResource[*WindowRes](ctx.Resources).Handle
-		window.SwapBuffers()
+		w := ecs.GetResource[*window.Resource](ctx.Resources).Handle
+		w.SwapBuffers()
 	})
 
 	return s

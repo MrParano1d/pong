@@ -3,6 +3,8 @@ package opengl
 import (
 	"github.com/mrparano1d/ecs"
 	"github.com/mrparano1d/ecs/core"
+	"github.com/mrparano1d/pong/opengl/camera"
+	"github.com/mrparano1d/pong/opengl/events"
 	"github.com/mrparano1d/pong/opengl/time"
 )
 
@@ -27,6 +29,11 @@ func NewPlugin(config *PluginConfig) *Plugin {
 
 func (p *Plugin) Build(app *ecs.App) {
 
+	// Events
+	app.AddEvent(func(eventMap ecs.EventMap) {
+		ecs.AddEvent[events.WindowResize](eventMap)
+	})
+
 	// Config
 	app.AddStartUpSystemToStage(core.StageFirst, func(commands ecs.Commands) {
 		commands.InvokeResource(func(resourceMap ecs.ResourceMap) {
@@ -43,4 +50,8 @@ func (p *Plugin) Build(app *ecs.App) {
 	app.AddStageBefore(StageRender, NewPrepareStage())
 	app.AddStageAfter(StageRender, NewCleanupStage())
 	app.AddSystemToStage(core.StagePreUpdate, ClearSystem())
+
+	// Camera
+	app.AddStartUpSystemToStage(StagePrepare, camera.Setup())
+	app.AddSystemToStage(StagePrepare, camera.System())
 }

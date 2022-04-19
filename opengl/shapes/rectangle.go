@@ -12,17 +12,32 @@ import (
 type Rectangle struct {
 	vertices []types.Vertex
 
+	Width  int
+	Height int
+	X      int
+	Y      int
+
 	shape *Shape
 }
 
-func NewRectangle(bottomLeft, topLeft, topRight, bottomRight mgl32.Vec3, color color.Color) Rectangle {
+func NewRectangle(x, y, width, height int, color color.Color) Rectangle {
+
+	posX := float32(x)
+	posY := float32(y)
+	widthF := float32(width)
+	heightF := float32(height)
+
 	return Rectangle{
 		vertices: []types.Vertex{
-			utils.ToVertex(bottomLeft, color),
-			utils.ToVertex(topLeft, color),
-			utils.ToVertex(topRight, color),
-			utils.ToVertex(bottomRight, color),
+			utils.ToVertex([3]float32{posX, posY, 0.0}, color),
+			utils.ToVertex([3]float32{posX, posY + heightF, 0.0}, color),
+			utils.ToVertex([3]float32{posX + widthF, posY, 0.0}, color),
+			utils.ToVertex([3]float32{posX + widthF, posY + heightF, 0.0}, color),
 		},
+		Width:  width,
+		Height: height,
+		X:      x,
+		Y:      y,
 	}
 }
 

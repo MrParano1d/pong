@@ -6,17 +6,17 @@ import (
 
 type Camera struct {
 	position   mgl32.Vec3
-	projection mgl32.Mat4
+	projection Projection
 	view       mgl32.Mat4
 	viewProj   mgl32.Mat4
 }
 
-func NewCamera(fov float32, width float32, height float32) *Camera {
+func NewCamera(projection Projection) *Camera {
 
 	c := &Camera{
-		projection: mgl32.Ortho(0.0, width, height, 0.0, -1, 1),
-		//view:       mgl32.LookAt(cameraPos.X(), cameraPos.Y(), cameraPos.Z(), cameraCenter.X(), cameraCenter.Y(), cameraCenter.Z(), cameraUp.X(), cameraUp.Y(), cameraUp.Z()),
-		position: mgl32.Vec3{0.0, 0.0, 0.0},
+		projection: projection,
+		view:       mgl32.Translate3D(0, 0, 0),
+		position:   mgl32.Vec3{0.0, 0.0, 0.0},
 	}
 
 	c.Update()
@@ -24,8 +24,12 @@ func NewCamera(fov float32, width float32, height float32) *Camera {
 	return c
 }
 
+func (c *Camera) Projection() Projection {
+	return c.projection
+}
+
 func (c *Camera) Update() {
-	c.viewProj = c.projection
+	c.viewProj = c.projection.Matrix().Mul4(c.view)
 }
 
 func (c *Camera) Translate(v mgl32.Vec3) {
