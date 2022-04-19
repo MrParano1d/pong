@@ -2,6 +2,7 @@ package camera
 
 import (
 	"github.com/mrparano1d/ecs"
+	"github.com/mrparano1d/pong/opengl/events"
 	"github.com/mrparano1d/pong/opengl/window"
 )
 
@@ -32,16 +33,19 @@ func Setup() ecs.StartUpSystem {
 func System() ecs.System {
 	return func(ctx ecs.SystemContext) {
 
-		// TODO refactor window size change to an event instead a system
-		w := ecs.GetResource[*window.Resource](ctx.Resources)
-		cameras := ecs.GetResource[*Cameras](ctx.Resources)
+		reader := ctx.EventReader(events.WindowResize{})
+		for reader.Next() {
+			event := reader.Read().(events.WindowResize)
 
-		projections := ecs.GetResource[*Projections](ctx.Resources)
+			cameras := ecs.GetResource[*Cameras](ctx.Resources)
 
-		projections.Orthographic.Update(w.Width, w.Height)
-		projections.Perspective.Update(w.Width, w.Height)
+			projections := ecs.GetResource[*Projections](ctx.Resources)
 
-		cameras.Orthographic.Update()
-		cameras.Perspective.Update()
+			projections.Orthographic.Update(float32(event.Width), float32(event.Height))
+			projections.Perspective.Update(float32(event.Width), float32(event.Height))
+
+			cameras.Orthographic.Update()
+			cameras.Perspective.Update()
+		}
 	}
 }
