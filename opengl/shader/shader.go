@@ -12,6 +12,8 @@ type Shader struct {
 	vertexShaderFilepath   string
 	fragmentShaderFilepath string
 	cleanup                bool
+
+	ModelViewProjMatrixLocation int32
 }
 
 func NewShader(vertexShaderFilepath string, fragmentShaderFilepath string, cleanup bool) *Shader {
@@ -62,6 +64,8 @@ func (s *Shader) link(shaders [2]uint32) error {
 			gl.DeleteShader(sh)
 		}
 	}
+
+	s.ModelViewProjMatrixLocation = s.UniformLocation("u_MVP")
 
 	return nil
 }

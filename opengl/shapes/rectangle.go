@@ -3,7 +3,6 @@ package shapes
 import (
 	"fmt"
 	"github.com/go-gl/gl/v4.6-core/gl"
-	"github.com/go-gl/mathgl/mgl32"
 	"github.com/mrparano1d/pong/opengl/types"
 	"github.com/mrparano1d/pong/opengl/utils"
 	"image/color"
@@ -12,33 +11,41 @@ import (
 type Rectangle struct {
 	vertices []types.Vertex
 
-	Width  int
-	Height int
-	X      int
-	Y      int
+	width  int
+	height int
+	x      int
+	y      int
 
 	shape *Shape
 }
 
-func NewRectangle(x, y, width, height int, color color.Color) Rectangle {
+func NewRectangle(x, y, width, height int, color color.Color) *Rectangle {
 
 	posX := float32(x)
 	posY := float32(y)
 	widthF := float32(width)
 	heightF := float32(height)
 
-	return Rectangle{
+	return &Rectangle{
 		vertices: []types.Vertex{
 			utils.ToVertex([3]float32{posX, posY, 0.0}, color),
 			utils.ToVertex([3]float32{posX, posY + heightF, 0.0}, color),
 			utils.ToVertex([3]float32{posX + widthF, posY, 0.0}, color),
 			utils.ToVertex([3]float32{posX + widthF, posY + heightF, 0.0}, color),
 		},
-		Width:  width,
-		Height: height,
-		X:      x,
-		Y:      y,
+		width:  width,
+		height: height,
+		x:      x,
+		y:      y,
 	}
+}
+
+func (r *Rectangle) Width() float32 {
+	return float32(r.width)
+}
+
+func (r *Rectangle) Height() float32 {
+	return float32(r.height)
 }
 
 func (r *Rectangle) Vertices() []types.Vertex {
@@ -70,9 +77,6 @@ func (r *Rectangle) Unbind() {
 	r.shape.Unbind()
 }
 
-func (r *Rectangle) Draw(modelViewProj mgl32.Mat4) {
-	r.Bind()
-	defer r.Unbind()
-	gl.UniformMatrix4fv(r.shape.modelViewProjMatrixLocation, 1, false, &modelViewProj[0])
+func (r *Rectangle) Draw() {
 	gl.DrawElements(gl.TRIANGLES, int32(len(r.Indices())), gl.UNSIGNED_INT, nil)
 }

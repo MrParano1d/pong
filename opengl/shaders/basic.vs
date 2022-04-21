@@ -5,10 +5,10 @@ layout(location = 1) in vec4 a_color;
 
 out vec4 v_color;
 
-uniform mat4 u_modelViewProj;
+uniform mat4 u_MVP;
 
 void main()
 {
-    gl_Position = u_modelViewProj * vec4(a_position, 1.0f);
+    gl_Position = u_MVP * vec4(a_position, 1.0f);
     v_color = a_color;
 }

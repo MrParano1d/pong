@@ -25,13 +25,7 @@ func (RenderStage) Name() string {
 }
 
 func NewRenderStage() *RenderStage {
-	s := &RenderStage{
+	return &RenderStage{
 		Stage: ecs.NewDefaultStage(),
 	}
-
-	s.AddSystem(func(ctx ecs.SystemContext) {
-		// TODO render stuff
-	})
-
-	return s
 }

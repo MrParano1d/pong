@@ -51,9 +51,6 @@ func (t *Triangle) Unbind() {
 	t.shape.Unbind()
 }
 
-func (t *Triangle) Draw(modelViewProj mgl32.Mat4) {
-	t.Bind()
-	defer t.Unbind()
-	gl.UniformMatrix4fv(t.shape.modelViewProjMatrixLocation, 1, false, &modelViewProj[0])
+func (t *Triangle) Draw() {
 	gl.DrawElements(gl.TRIANGLES, int32(len(t.Indices())), gl.UNSIGNED_INT, nil)
 }

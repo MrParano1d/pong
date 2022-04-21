@@ -1,19 +1,17 @@
 package shapes
 
 import (
-	"fmt"
+	"github.com/mrparano1d/pong/opengl/assets"
 	"github.com/mrparano1d/pong/opengl/buffer"
-	"github.com/mrparano1d/pong/opengl/shader"
 	"github.com/mrparano1d/pong/opengl/types"
 )
 
 type Shape struct {
 	indexBuffer  *buffer.IndexBuffer
 	vertexBuffer *buffer.VertexBuffer
-	shader       *shader.Shader
-
-	modelViewProjMatrixLocation int32
 }
+
+var _ assets.Asset = &Shape{}
 
 func CreateShape(vertices []types.Vertex, indices []uint32) (*Shape, error) {
 
@@ -23,16 +21,19 @@ func CreateShape(vertices []types.Vertex, indices []uint32) (*Shape, error) {
 	s.vertexBuffer = buffer.NewVertexBuffer(vertices)
 	s.vertexBuffer.Unbind()
 
-	// @TODO set cleanup to true in production
-	s.shader = shader.NewShader("./opengl/shaders/basic.vs", "./opengl/shaders/basic.fs", false)
-	if err := s.shader.Create(); err != nil {
-		return nil, fmt.Errorf("failed to create triangle shader: %v", err)
-	}
-	s.shader.Bind()
-
-	s.modelViewProjMatrixLocation = s.shader.UniformLocation("u_modelViewProj")
-
 	return s, nil
+}
+
+func (s *Shape) Create() error {
+	return nil
+}
+
+func (s *Shape) Width() float32 {
+	return 0.0
+}
+
+func (s *Shape) Height() float32 {
+	return 0.0
 }
 
 func (s *Shape) Bind() {
@@ -43,4 +44,8 @@ func (s *Shape) Bind() {
 func (s *Shape) Unbind() {
 	s.indexBuffer.Unbind()
 	s.vertexBuffer.Unbind()
+}
+
+func (s *Shape) Draw() {
+
 }

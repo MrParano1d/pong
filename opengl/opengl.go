@@ -48,10 +48,12 @@ func (p *Plugin) Build(app *ecs.App) {
 	// Stages
 	app.AddStageAfter(core.StagePostUpdate, NewRenderStage())
 	app.AddStageBefore(StageRender, NewPrepareStage())
+	app.AddStageBefore(StageRender, NewQueueStage())
 	app.AddStageAfter(StageRender, NewCleanupStage())
 	app.AddSystemToStage(core.StagePreUpdate, ClearSystem())
 
 	// Camera
 	app.AddStartUpSystemToStage(StagePrepare, camera.Setup())
 	app.AddSystemToStage(StagePrepare, camera.System())
+
 }

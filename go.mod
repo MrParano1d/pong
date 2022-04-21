@@ -6,7 +6,7 @@ require (
 	github.com/go-gl/gl v0.0.0-20211210172815-726fda9656d6 // indirect
 	github.com/go-gl/glfw/v3.3/glfw v0.0.0-20220320163800-277f93cfa958 // indirect
 	github.com/go-gl/mathgl v1.0.0 // indirect
-	github.com/mrparano1d/ecs v0.0.0-20220419195111-53f9b539af1e // indirect
+	github.com/mrparano1d/ecs v0.0.0-20220421182812-c19813316cee // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.8.0 // indirect
 	go.uber.org/zap v1.21.0 // indirect
