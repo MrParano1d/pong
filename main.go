@@ -10,9 +10,8 @@ import (
 	"fmt"
 	"github.com/mrparano1d/ecs"
 	"github.com/mrparano1d/ecs/core"
-	"github.com/mrparano1d/pong/fps"
+	"github.com/mrparano1d/pong/ebiten_plugin"
 	"github.com/mrparano1d/pong/game"
-	"github.com/mrparano1d/pong/opengl"
 	"log"
 	"os"
 	"runtime"
@@ -37,19 +36,15 @@ func main() {
 		defer pprof.StopCPUProfile()
 	}
 
+	ebiten := ebiten_plugin.NewPlugin()
+
 	app := ecs.NewApp()
 
 	app.AddPlugin(core.NewPlugin(core.EnvDebug))
-	app.AddPlugin(opengl.NewPlugin(&opengl.PluginConfig{
-		Title:          "Pong",
-		Width:          800,
-		Height:         600,
-		ShowWireframes: true,
-	}))
-	app.AddPlugin(fps.NewPlugin())
+	app.AddPlugin(ebiten)
 	app.AddPlugin(game.NewPlugin())
 
-	if err := app.Run(); err != nil {
+	if err := ebiten.Run(); err != nil {
 		log.Fatal(err)
 	}
 
