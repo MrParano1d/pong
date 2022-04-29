@@ -45,8 +45,65 @@ func Setup() ecs.StartUpSystem {
 			X: 300,
 			Y: 150,
 		}).Insert(&components.Velocity{
+			X: 20,
+			Y: 20,
+		})
+
+		commands.Spawn().Insert(
+			&components.Asset{
+				Handle: shapes.NewRectangle(0, 0, 200, 200,
+					color.RGBA{
+						R: 255,
+						G: 0,
+						B: 0,
+						A: 255,
+					},
+				),
+			},
+		).Insert(&components.Position{
+			X: 400,
+			Y: 300,
+		}).Insert(&components.Velocity{
+			X: 300,
+			Y: 300,
+		})
+
+		commands.Spawn().Insert(
+			&components.Asset{
+				Handle: shapes.NewRectangle(0, 0, 200, 200,
+					color.RGBA{
+						R: 255,
+						G: 0,
+						B: 255,
+						A: 255,
+					},
+				),
+			},
+		).Insert(&components.Position{
+			X: 60,
+			Y: 60,
+		}).Insert(&components.Velocity{
+			X: 100,
+			Y: 100,
+		})
+
+		commands.Spawn().Insert(
+			&components.Asset{
+				Handle: shapes.NewRectangle(0, 0, 200, 200,
+					color.RGBA{
+						R: 0,
+						G: 255,
+						B: 255,
+						A: 255,
+					},
+				),
+			},
+		).Insert(&components.Position{
 			X: 150,
-			Y: 150,
+			Y: 333,
+		}).Insert(&components.Velocity{
+			X: 70,
+			Y: 70,
 		})
 	}
 }
