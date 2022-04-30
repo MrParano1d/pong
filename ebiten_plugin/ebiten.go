@@ -1,12 +1,12 @@
 package ebiten_plugin
 
 import (
-	"fmt"
 	"github.com/mrparano1d/ecs"
 	"github.com/mrparano1d/ecs/core"
+	"github.com/mrparano1d/pong/ebiten_plugin/events"
 	"github.com/mrparano1d/pong/ebiten_plugin/internal/interfaces"
 	render "github.com/mrparano1d/pong/ebiten_plugin/internal/render/ebiten"
-	"image/color"
+	"github.com/mrparano1d/pong/ebiten_plugin/internal/systems"
 )
 
 type Plugin struct {
@@ -27,6 +27,18 @@ func NewPlugin() *Plugin {
 }
 
 func (p *Plugin) Build(app *ecs.App) {
+	app.AddEvent(
+		func(eventMap ecs.EventMap) {
+			ecs.AddEvent[events.CollisionEvent](eventMap)
+		},
+	)
+	app.AddEvent(
+		func(eventMap ecs.EventMap) {
+			ecs.AddEvent[events.WorldBoundaryEvent](eventMap)
+		},
+	)
+	app.AddSystemToStage(core.StageUpdate, systems.ColliderSystem())
+
 	app.AddStageAfter(core.StagePostUpdate, NewRenderStage())
 	app.AddStageBefore(StageRender, NewPrepareStage())
 	app.AddStageAfter(StageRender, NewCleanupStage())
@@ -42,14 +54,14 @@ func (p *Plugin) Run() error {
 		func(surface interfaces.Surface) error {
 			ecs.AddResource[interfaces.Surface](p.app.World().Resources(), surface)
 
-			surface.DrawText(
-				fmt.Sprintf(
-					"TPS: %0.2f / FPS: %0.2f",
-					p.renderer.CurrentTPS(),
-					p.renderer.CurrentFPS(),
-				),
-				color.RGBA{255, 255, 255, 255},
-			)
+			//surface.DrawText(
+			//	fmt.Sprintf(
+			//		"TPS: %0.2f / FPS: %0.2f",
+			//		p.renderer.CurrentTPS(),
+			//		p.renderer.CurrentFPS(),
+			//	),
+			//	color.RGBA{255, 255, 255, 255},
+			//)
 
 			p.app.RunSystems(ecs.WithStageLabelFilter(ecs.LabelRender))
 			return nil

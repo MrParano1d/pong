@@ -6,8 +6,8 @@ import (
 )
 
 type Rectangle struct {
-	Width  float64
-	Height float64
+	width  float64
+	height float64
 	X      float64
 	Y      float64
 	Color  color.Color
@@ -18,13 +18,21 @@ var _ Handle = &Rectangle{}
 
 func NewRectangle(width, height, x, y float64, color color.Color, border color.Color) *Rectangle {
 	return &Rectangle{
-		Width:  width,
-		Height: height,
+		width:  width,
+		height: height,
 		X:      x,
 		Y:      y,
 		Color:  color,
 		Border: border,
 	}
+}
+
+func (r *Rectangle) Width() float64 {
+	return r.width
+}
+
+func (r *Rectangle) Height() float64 {
+	return r.height
 }
 
 func (r *Rectangle) Translate(x, y float64) {
@@ -34,6 +42,6 @@ func (r *Rectangle) Translate(x, y float64) {
 
 func (r *Rectangle) Draw(surface interfaces.Surface) {
 	surface.PushTranslation(r.X, r.Y)
-	surface.DrawRect(r.Width, r.Height, r.Color, r.Border)
+	surface.DrawRect(r.width, r.height, r.Color, r.Border)
 	surface.Pop()
 }
